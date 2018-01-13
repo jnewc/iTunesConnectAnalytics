@@ -1,7 +1,7 @@
 'use strict';
 
-var _ = require('underscore');
-var moment = require('moment');
+import _  from 'underscore';
+import moment from 'moment';
 
 module.exports.frequency = {
   day: 'DAY',
@@ -98,15 +98,15 @@ var Query = function(appId, config) {
   this.apiURL = 'https://analytics.itunes.apple.com/analytics/api/v1';
 
   _.extend(this.config, config);
-  
+
   if (!_.isArray(this.config.measures)) {
     this.config.measures = [this.config.measures];
   }
   if (this.config.group) {
-    this.config.group = _.extend({ 
-      metric: this.config.measures[0], 
-      rank: "" /*  TODO: Find out what this actually does. Not adding this errors, so defaulting it to blank */, 
-      limit: 200 
+    this.config.group = _.extend({
+      metric: this.config.measures[0],
+      rank: "" /*  TODO: Find out what this actually does. Not adding this errors, so defaulting it to blank */,
+      limit: 200
     }, this.config.group);
   }
 
@@ -129,7 +129,7 @@ Query.prototype.metrics = function() {
     {key: 'group', value: null},
     {key: 'dimensionFilters', value: []},
   ];
-  for (var i = 0; i < defaults.length; ++i) {
+  for (i = 0; i < defaults.length; ++i) {
     var dflt = defaults[i];
     if (this.config[dflt.key] === undefined)
       this.config[dflt.key] = dflt.value;
@@ -150,7 +150,7 @@ Query.prototype.sources = function() {
     {key: 'limit', value: 200},
     {key: 'dimension', value: 'domainReferrer'},
   ];
-  for (var i = 0; i < defaults.length; ++i) {
+  for (i = 0; i < defaults.length; ++i) {
     var dflt = defaults[i];
     if (this.config[dflt.key] === undefined)
       this.config[dflt.key] = dflt.value;
