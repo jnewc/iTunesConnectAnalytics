@@ -65,7 +65,6 @@ Itunes.prototype.setDsToken = function(itctxToken) {
 	var self = this;
 	console.log("itctxToken: ", itctxToken);
 	var b64data = itctxToken.split("|")[0].split("=")[1];
-	console.log("b64 data: ", b64data);
 	var json = JSON.parse(Buffer.from(b64data, 'base64').toString());
 	self._dsToken = json.ds;
 }
@@ -168,6 +167,8 @@ Itunes.prototype.changeProvider = function(providerId, callback) {
   });
 };
 
+// Analytics
+
 Itunes.prototype.getApps = function(callback) {
   var url = 'https://analytics.itunes.apple.com/analytics/api/v1/app-info/app';
   this.getAPIURL(url, callback);
@@ -183,10 +184,18 @@ Itunes.prototype.getUserInfo = function(callback) {
   this.getAPIURL(url, callback);
 };
 
+
+// Summary
+
+Itunes.prototype.getSummary = function(callback) {
+	var url = "https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/apps/manageyourapps/summary/v2";
+	this.getAPIURL(url, callback);
+}
+
 Itunes.prototype.switchAccount = function(accountId, callback) {
 	const url = "https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/v1/session/webSession";
 	const body = { dsId: accountId, contentProviderId: this._dsToken, ipAddress: null };
-	console.log("Switching account with data: ", body);
+	//console.log("Switching account with data: ", body);
 	this.getAPIURL(url, callback, body, "POST");
 };
 
@@ -199,7 +208,7 @@ Itunes.prototype.request = function(query, callback) {
 
 Itunes.prototype.getAPIURL = function(uri, callback, json, method) {
   var self = this;
-	var method = (method || "get").toLowerCase();
+	method = (method || "get").toLowerCase();
   async.whilst(function() {
     return self._queue.paused;
   }, function(callback) {
