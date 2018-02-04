@@ -65,7 +65,8 @@ module.exports.frequency = {
 
 module.exports.queryType = {
   sources : 'sources',
-  metrics : 'metrics'
+  metrics : 'metrics',
+	measures: 'measures'
 }
 
 function AnalyticsQuery(type, appId, config) {
@@ -83,6 +84,10 @@ AnalyticsQuery.metrics = function(appId, config) {
 
 AnalyticsQuery.sources = function(appId, config) {
   return new Query(appId, config).sources();
+}
+
+AnalyticsQuery.measures = function(appId, config) {
+	return new Query(appId, config).measures();
 }
 
 var Query = function(appId, config) {
@@ -157,6 +162,22 @@ Query.prototype.sources = function() {
   }
 
   return this;
+}
+
+Query.prototype.measures = function() {
+	this.endpoint = '/data/app/detail/measures';
+
+	// var defaults = [
+	// 	{key: 'group', value: null},
+	// 	{key: 'dimensionFilters', value: []},
+	// ];
+	// for (i = 0; i < defaults.length; ++i) {
+	// 	var dflt = defaults[i];
+	// 	if (this.config[dflt.key] === undefined)
+	// 		this.config[dflt.key] = dflt.value;
+	// }
+
+	return this;
 }
 
 Query.prototype.date = function(start, end) {
